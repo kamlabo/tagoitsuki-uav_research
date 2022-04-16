@@ -1,0 +1,91 @@
+import csv
+import math
+
+def HelpCount(INDEX,AREA_MAX,no):
+	f1 = open('csv_file/FindRoute/FindRoute'+str(no)+'.csv','r')
+	read = csv.reader(f1)
+	FiR = [ e for e in read ]
+	f1.close()
+	f2 = open('csv_file/User/User'+str(no)+'.csv','r')
+	read = csv.reader(f2)
+	User = [ e for e in read ]
+	f2.close()
+	
+	#Stating Value
+	a, sum, total = 0, 0, 0
+	while 1:
+		pos_x = int(FiR[0][a])
+		pos_y = int(FiR[1][a])
+		print('['+str(pos_x)+','+str(pos_y)+']['+User[pos_x][pos_y]+',',end='')
+		rate = float(User[pos_x][pos_y])
+		if((pos_x==0 and pos_y==0)or(pos_x==INDEX-1 and pos_y==INDEX-1)):
+			print(']')
+			total = total + math.floor(rate*float(Amount))
+		else:
+			sum = sum + math.floor(rate*float(Amount)/2)
+			total = total + math.floor(rate*float(Amount)/2)
+			print(str(math.floor(float(User[pos_x][pos_y])*float(Amount)/2))+']')
+			User[pos_x][pos_y]=str(float(User[pos_x][pos_y])/2)
+		if(pos_x==4 and pos_y==4):
+			break
+		else:
+			a = a + 1
+	print("Rescue Amount:"+str(sum))
+	print("Staying in Shelter:"+str(total))
+	
+	f3 = open('csv_file/User/User'+str(no+1)+'.csv','w')
+	for a in range(INDEX):
+		for b in range(INDEX):
+			f3.write(User[a][b])
+			if(b!=4):
+				f3.write(',')
+			else:
+				f3.write('\n')
+	f3.close()
+
+def HelpCount2(INDEX,Amount,no):
+	f1 = open('csv_file/FindRoute/FindRoute'+str(no)+'.csv','r')
+	read = csv.reader(f1)
+	FiR = [ e for e in read ]
+	f1.close()
+	f2 = open('csv_file/User/User'+str(no)+'.csv','r')
+	read = csv.reader(f2)
+	User = [ e for e in read ]
+	f2.close()
+	
+	#Stating Value
+	a, sum, total = 0, 0, 0
+	while 1:
+		pos_x = int(FiR[0][a])
+		pos_y = int(FiR[1][a])
+		print('['+str(pos_x)+','+str(pos_y)+']['+User[pos_x][pos_y]+',',end='')
+		rate = float(User[pos_x][pos_y])
+		if((pos_x==0 and pos_y==0)or(pos_x==INDEX-1 and pos_y==INDEX-1)):
+			print(']')
+			total = total + math.floor(rate*float(Amount))
+		else:
+			sum = sum + math.floor(rate*float(Amount)/2)
+			total = total + math.floor(rate*float(Amount)/2)
+			print(str(math.floor(float(User[pos_x][pos_y])*float(Amount)/2))+']')
+			User[pos_x][pos_y]=str(float(User[pos_x][pos_y])/2)
+		if(pos_x==0 and pos_y==0):
+			break
+		else:
+			a = a + 1
+	print("Rescue Amount:"+str(sum))
+	print("Staying in Shelter:"+str(total))
+	
+	f3 = open('csv_file/User/User'+str(no+1)+'.csv','w')
+	for a in range(INDEX):
+		for b in range(INDEX):
+			f3.write(User[a][b])
+			if(b!=4):
+				f3.write(',')
+			else:
+				f3.write('\n')
+	f3.close()
+	
+if __name__=='__main__':
+	no = 5
+	HelpCount(5,200,no)
+	#HelpCount2(5,200,no)
