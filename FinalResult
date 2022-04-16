@@ -1,0 +1,25 @@
+import csv
+
+def FinalResult(MAX_AREA_POINT, no, AREA_MAX):
+　　f1 = open('CSV/User/User_1.csv')
+　　read = csv.reader(f1)
+　　UserB = [e for e in read]
+　　f1.close()
+
+　　for F in range(MAX_AREA_POINT):
+　　　　f3 = open('CSV/USER_AMONT.csv', 'a')
+　　　　f3.write(UserB[F][0] + ','
+　　　　　　　　　　　　+ str(int(float(UserB[F][1]) * AREA_MAX)) + ',')
+　　
+　　　　for G in range(1, no, 1):
+　　　　　　f2 = open('CSV/User/User_' + str(G) + '.csv')
+　　　　　　read = csv.reader(f2)
+　　　　　　UserA = [e for e in read]
+　　　　　　f2.close()
+　　　　　　f3.write(str(int(float(UserA[F][1]) * AREA_MAX)) + ',')
+　　　　f3.write(str(int(float(UserB[F][1]) * AREA_MAX)
+　　　　　　　　　　　　　- int(float(UserA[F][1]) * AREA_MAX)) + '\n')
+　　　　f3.close()
+
+def __name__ == '__main__':
+　　pass
