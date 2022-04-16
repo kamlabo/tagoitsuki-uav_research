@@ -1,91 +1,140 @@
 import csv
 import math
+import random
 
-def HelpCount(INDEX,AREA_MAX,no):
-	f1 = open('csv_file/FindRoute/FindRoute'+str(no)+'.csv','r')
-	read = csv.reader(f1)
-	FiR = [ e for e in read ]
-	f1.close()
-	f2 = open('csv_file/User/User'+str(no)+'.csv','r')
-	read = csv.reader(f2)
-	User = [ e for e in read ]
-	f2.close()
-	
-	#Stating Value
-	a, sum, total = 0, 0, 0
-	while 1:
-		pos_x = int(FiR[0][a])
-		pos_y = int(FiR[1][a])
-		print('['+str(pos_x)+','+str(pos_y)+']['+User[pos_x][pos_y]+',',end='')
-		rate = float(User[pos_x][pos_y])
-		if((pos_x==0 and pos_y==0)or(pos_x==INDEX-1 and pos_y==INDEX-1)):
-			print(']')
-			total = total + math.floor(rate*float(Amount))
-		else:
-			sum = sum + math.floor(rate*float(Amount)/2)
-			total = total + math.floor(rate*float(Amount)/2)
-			print(str(math.floor(float(User[pos_x][pos_y])*float(Amount)/2))+']')
-			User[pos_x][pos_y]=str(float(User[pos_x][pos_y])/2)
-		if(pos_x==4 and pos_y==4):
-			break
-		else:
-			a = a + 1
-	print("Rescue Amount:"+str(sum))
-	print("Staying in Shelter:"+str(total))
-	
-	f3 = open('csv_file/User/User'+str(no+1)+'.csv','w')
-	for a in range(INDEX):
-		for b in range(INDEX):
-			f3.write(User[a][b])
-			if(b!=4):
-				f3.write(',')
-			else:
-				f3.write('\n')
-	f3.close()
+def dangerValue_EXchange(Dang):
+　　for a in range(len(Dang)):
+　　　　qu = random.randrange(500)
+　　　　if(qu % 250 == 0):
+　　　　　　if((float(Dang[a][1]) * 0.75) >= 0.001):
+　　　　　　　　Dang[a][1] = float(Dang[a][1]) * 0.75
+　　　　　　else:
+　　　　　　　　Dang[a][1] = 0.00
+　　　　elif(qu % 100 == 0):
+　　　　　　if((float(Dang[a][1]) * 1.25) <= 1):
+　　　　　　　　Dang[a][1] = float(Dang[a][1]) * 1.25
+　　　　　　else:
+　　　　　　　　Dang[a][1] = 1.00
+　　　　elif(qu % 50 == 0):
+　　　　　　if((float(Dang[a][1]) * 1.125) <= 1):
+　　　　　　　　Dang[a][1] = float(Dang[a][1]) * 1.125
+　　　　　　else:
+　　　　　　　　Dang[a][1] = 1.00
+　　
+　　return Dang
 
-def HelpCount2(INDEX,Amount,no):
-	f1 = open('csv_file/FindRoute/FindRoute'+str(no)+'.csv','r')
-	read = csv.reader(f1)
-	FiR = [ e for e in read ]
-	f1.close()
-	f2 = open('csv_file/User/User'+str(no)+'.csv','r')
-	read = csv.reader(f2)
-	User = [ e for e in read ]
-	f2.close()
-	
-	#Stating Value
-	a, sum, total = 0, 0, 0
-	while 1:
-		pos_x = int(FiR[0][a])
-		pos_y = int(FiR[1][a])
-		print('['+str(pos_x)+','+str(pos_y)+']['+User[pos_x][pos_y]+',',end='')
-		rate = float(User[pos_x][pos_y])
-		if((pos_x==0 and pos_y==0)or(pos_x==INDEX-1 and pos_y==INDEX-1)):
-			print(']')
-			total = total + math.floor(rate*float(Amount))
-		else:
-			sum = sum + math.floor(rate*float(Amount)/2)
-			total = total + math.floor(rate*float(Amount)/2)
-			print(str(math.floor(float(User[pos_x][pos_y])*float(Amount)/2))+']')
-			User[pos_x][pos_y]=str(float(User[pos_x][pos_y])/2)
-		if(pos_x==0 and pos_y==0):
-			break
-		else:
-			a = a + 1
-	print("Rescue Amount:"+str(sum))
-	print("Staying in Shelter:"+str(total))
-	
-	f3 = open('csv_file/User/User'+str(no+1)+'.csv','w')
-	for a in range(INDEX):
-		for b in range(INDEX):
-			f3.write(User[a][b])
-			if(b!=4):
-				f3.write(',')
-			else:
-				f3.write('\n')
-	f3.close()
-	
-if __name__=='__main__':
-	no = 5
-	HelpCount(5,200,no)
-	#HelpCount2(5,200,no)
+def HelpCount(MAX, Amount, no):
+　　f1 = open('CSV/FindRoute/FindRoute_' + str(no) + '.csv', 'r')
+　　read = csv.reader(f1)
+　　FiR = [e for e in read]
+　　f1.close()
+　　
+　　f2 = open('CSV/User/User_' + str(no) + '.csv', 'r')
+　　read = csv.reader(f2)
+　　User = [e for e in read]
+　　f2.close()
+　　
+　　#Stating Value
+　　a, sum, total = 0, 0, 0
+　　while 1:
+　　　　pos = int(FiR[0][a])
+　　　　rate = float(User[pos][1])
+　　　　
+　　　　if((pos == 0) or (pos == MAX)):
+　　　　　　total = total + math.floor(rate * float(Amount))
+　　　　else:
+　　　　　　sum = sum + math.floor(rate * float(Amount) / 2)
+　　　　　　total = total + math.floor(rate * float(Amount) / 2)
+　　　　　　User[pos][1] = str(float(User[pos][1]) / 2)
+　　　　if(pos == MAX - 1):
+　　　　　　break
+　　　　else:
+　　　　　　a = a + 1
+　　print("Rescue Amount:" + str(sum))
+　　print("Staying in Shelter:" + str(total))
+　　
+　　f3 = open('CSV/User/User_' + str(no + 1) + '.csv', 'w')
+　　for a in range(MAX - 1):
+　　　　for b in range(2):
+　　　　　　f3.write(User[a][b] + ',')
+　　　　f3.write('\n')
+　　f3.write(User[MAX - 1][0] + ',' + User[MAX - 1][1] + ',')
+　　f3.close()
+　　
+　　f4 = open('CSV/Danger/Danger_' + str(no) + '.csv', 'r')
+　　read = csv.reader(f4)
+　　Dang = [e for e in read]
+　　f4.close()
+　　
+　　dang = dangerValue_EXchange(Dang)
+　　
+　　f5 = open('CSV/Danger/Danger_' + str(no + 1) + '.csv', 'w')
+　　for a in range(MAX - 1):
+　　　　for b in range(2):
+　　　　　　f5.write(str(dang[a][b]) + ',')
+　　　　f5.write('\n')
+　　f5.write(str(dang[MAX - 1][0]) + ',' + str(dang[MAX - 1][1]) + ',')
+　　f5.close()
+　　
+　　f6 = open('CSV/result.csv', 'a')
+　　f6.write(str(no)+',' + str(total) + ',' + str(sum) + '\n')
+　　f6.close()
+
+def HelpCount2(MAX, Amount, no):
+　　f1 = open('CSV/FindRoute/FindRoute_' + str(no) + '.csv', 'r')
+　　read = csv.reader(f1)
+　　FiR = [e for e in read]
+　　f1.close()
+　　f2 = open('CSV/User/User_' + str(no) + '.csv' , 'r')
+　　read = csv.reader(f2)
+　　User = [e for e in read]
+　　f2.close()
+　　
+　　#Stating Value
+　　a, sum, total = 0, 0, 0
+　　while 1:
+　　　　pos = int(FiR[0][a])
+　　　　rate = float(User[pos][1])
+　　　　if((pos == 0) or (pos == MAX)):
+　　　　　　total = total + math.floor(rate * float(Amount))
+　　　　else:
+　　　　　　sum = sum + math.floor(rate * float(Amount) / 2)
+　　　　　　total = total + math.floor(rate * float(Amount) / 2)
+　　　　　　User[pos][1] = str(float(User[pos][1]) / 2)
+　　　　
+　　　　if(pos == 0):
+　　　　　　break
+　　　　else:
+　　　　　　a = a + 1
+　　print("Rescue Amount:" + str(sum))
+　　print("Staying in Shelter:" + str(total))
+　　
+　　f3 = open('CSV/User/User_' + str(no + 1) +'.csv', 'w')
+　　for a in range(MAX - 1):
+　　　　for b in range(2):
+　　　　　　f3.write(User[a][b] + ',')
+　　　　f3.write('\n')
+　　f3.write(User[MAX - 1][0] + ',' + User[MAX - 1][1] + ',')
+　　f3.close()
+　　
+　　f4 = open('CSV/Danger/Danger_' + str(no) + '.csv', 'r')
+　　read = csv.reader(f4)
+　　Dang = [e for e in read]
+　　f4.close()
+　　
+　　dang = dangerValue_EXchange(Dang)
+　　
+　　f5 = open('CSV/Danger/Danger_' + str(no + 1) + '.csv', 'w')
+　　for a in range(MAX - 1):
+　　　　for b in range(2):
+　　　　　　f5.write(str(dang[a][b]) + ',')
+　　　　f5.write('\n')
+　　f5.write(str(dang[MAX - 1][0]) + ',' + str(dang[MAX - 1][1]) + ',')
+　　f5.close()
+　　
+　　f6 = open('CSV/result.csv', 'a')
+　　f6.write(str(no) + ',' + str(total) + ',' + str(sum) + '\n')
+　　f6.close()
+
+if __name__ == '__main__':
+　　pass
